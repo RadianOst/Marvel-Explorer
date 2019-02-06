@@ -43,8 +43,8 @@
         computed: {
             searchObject: function(){
                 return {
-                    category: this.selectedCategory,
-                    text: this.searchText
+                    category: this.selectedCategory.toLowerCase(),
+                    text: this.searchText.toLowerCase()
                 }
             }
         },
