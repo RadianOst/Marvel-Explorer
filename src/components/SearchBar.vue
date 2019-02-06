@@ -59,6 +59,14 @@
                     </v-list-tile>
                 </v-list>
             </v-menu>
+            <v-btn
+                    v-if="isSearchingAdvanced"
+                    slot="extension"
+                    @click="toggleOrder"
+            >
+                <v-icon v-show="isOrderAscending">trending_up</v-icon>
+                <v-icon v-show="!isOrderAscending">trending_down</v-icon>
+            </v-btn>
             <v-toolbar-title
                     v-if="isSearchingAdvanced"
                     slot="extension"
@@ -108,16 +116,21 @@
                 },
                 defaultOrder: "modified",
                 selectedOrder: "modified",
+                isOrderAscending: true,
                 limitOptions: [1, 5, 10, 15, 20],
                 selectedLimit: 20
             }
         },
         computed: {
             searchObject: function(){
+                let orderTrending = '';
+                if (!this.isOrderAscending) {
+                    orderTrending = '-';
+                }
                 return {
                     category: this.selectedCategory,
                     text: this.searchText.toLowerCase(),
-                    order: this.selectedOrderCamelCased,
+                    order: `${orderTrending}${this.selectedOrderCamelCased}`,
                     limit: this.selectedLimit
                 }
             },
@@ -162,6 +175,9 @@
             },
             toggleAdvancedSearch() {
                 this.isSearchingAdvanced = !this.isSearchingAdvanced;
+            },
+            toggleOrder() {
+                this.isOrderAscending = !this.isOrderAscending;
             }
         }
     }
