@@ -42,7 +42,7 @@
                                 <v-list>
                                     <v-list-tile
                                             v-for="comic in character.comics.items"
-                                            :key="comic.name"
+                                            :key="comic.resourceURI"
                                     >
                                         <v-list-tile-content>
                                             <v-list-tile-title v-text="comic.name"></v-list-tile-title>
@@ -56,7 +56,7 @@
                                 <v-list>
                                     <v-list-tile
                                             v-for="serie in character.series.items"
-                                            :key="serie.name"
+                                            :key="serie.resourceURI"
                                     >
                                         <v-list-tile-content>
                                             <v-list-tile-title v-text="serie.name"></v-list-tile-title>
@@ -70,7 +70,7 @@
                                 <v-list>
                                     <v-list-tile
                                             v-for="story in character.stories.items"
-                                            :key="story.name"
+                                            :key="story.resourceURI"
                                     >
                                         <v-list-tile-content>
                                             <v-list-tile-title v-text="story.name"></v-list-tile-title>
@@ -83,7 +83,7 @@
                             >
                                 <v-list-tile
                                         v-for="event in character.events.items"
-                                        :key="event.name"
+                                        :key="event.resourceURI"
                                 >
                                     <v-list-tile-content>
                                         <v-list-tile-title v-text="event.name"></v-list-tile-title>
