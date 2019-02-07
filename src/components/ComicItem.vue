@@ -157,7 +157,7 @@
         props: ['comic'],
         data: function() {
             return {
-                tabs: ["Details", "Variants", "Prices", "Creators", "Characters", "Stories", "Events", "Urls"]
+                //
             }
         },
         computed: {
@@ -173,6 +173,18 @@
                     return this.comic.description;
                 }
                 return "No description added.";
+            },
+            tabs: function () {
+                return [
+                    'Details',
+                    `Variants (${this.comic.variants.length})`,
+                    `Prices (${this.comic.prices.length})`,
+                    `Creators (${this.comic.creators.available})`,
+                    `Characters (${this.comic.characters.available})`,
+                    `Stories (${this.comic.stories.available})`,
+                    `Events (${this.comic.events.available})`,
+                    "Urls"
+                ];
             }
         },
         methods: {

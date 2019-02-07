@@ -103,15 +103,18 @@
         data: function () {
             return {
                 searchText: '',
-                dropdownCategories: ['Comics', 'Characters'],
+                dropdownCategories: ['Characters', 'Comics', 'Series'],
                 selectedCategory: 'comics',
                 isSearchingAdvanced: false,
                 orderByOptions: {
                     comics: [
-                        "title", "issue number", "modified",
+                        "title", "issue number", "modified"
                     ],
                     characters: [
                         "name", "modified"
+                    ],
+                    series: [
+                       "title", "start year", "modified"
                     ]
                 },
                 defaultOrder: "modified",

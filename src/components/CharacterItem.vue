@@ -31,12 +31,6 @@
                                     <v-layout row>
                                         <v-card-title primary-title>
                                             <div>
-                                                <v-layout row>
-                                                    <v-flex pa-2><span class="blue--text text--accent-4">Comics:</span> {{ character.comics.available }}</v-flex>
-                                                    <v-flex pa-2><span class="blue--text text--accent-4">Series:</span> {{ character.series.available }}</v-flex>
-                                                    <v-flex pa-2><span class="blue--text text--accent-4">Stories:</span> {{ character.stories.available }}</v-flex>
-                                                    <v-flex pa-2><span class="blue--text text--accent-4">Events:</span> {{ character.events.available }}</v-flex>
-                                                </v-layout>
                                                 <span>{{ this.description }}</span>
                                             </div>
                                         </v-card-title>
@@ -127,7 +121,7 @@
         props: ['character'],
         data: function() {
             return {
-                tabs: ["Details", "Comics", "Series", "Stories", "Events", "Urls"]
+                //
             }
         },
         computed: {
@@ -143,6 +137,16 @@
                     return this.character.description;
                 }
                 return "No description added.";
+            },
+            tabs: function () {
+                return [
+                    'Details',
+                    `Comics (${this.character.comics.available})`,
+                    `Series (${this.character.series.available})`,
+                    `Stories (${this.character.stories.available})`,
+                    `Events (${this.character.events.available})`,
+                    "Urls"
+                ];
             }
         }
     }
