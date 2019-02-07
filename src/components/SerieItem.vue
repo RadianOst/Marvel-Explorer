@@ -11,13 +11,13 @@
                         ></v-img>
                     </v-flex>
                     <v-card-title primary-title="">
-                        <div class="headline">{{ character.name }}</div>
+                        <div class="headline">{{ serie.title }}</div>
                     </v-card-title>
                 </v-layout>
                 <v-layout row>
                     <v-flex>
                         <v-tabs show-arrows grow>
-                            <v-tabs-slider color="blue accent-4"></v-tabs-slider>
+                            <v-tabs-slider color="purple accent-4"></v-tabs-slider>
                             <v-tab
                                 v-for="tab in tabs"
                                 :key="tab"
@@ -31,6 +31,11 @@
                                     <v-layout row>
                                         <v-card-title primary-title>
                                             <div>
+                                                <v-layout row>
+                                                    <v-flex pa-2><span class="purple--text text--accent-4">Start year:</span> {{ serie.startYear }}</v-flex>
+                                                    <v-flex pa-2><span class="purple--text text--accent-4">End year:</span> {{ serie.endYear }}</v-flex>
+                                                    <v-flex pa-2><span class="purple--text text--accent-4">Rating:</span> {{ serie.rating }}</v-flex>
+                                                </v-layout>
                                                 <span>{{ this.description }}</span>
                                             </div>
                                         </v-card-title>
@@ -42,8 +47,8 @@
                             >
                                 <v-list>
                                     <v-list-tile
-                                            v-for="comic in character.comics.items"
-                                            :key="comic.resourceURI"
+                                            v-for="comic in serie.comics.items"
+                                            :key="comic.name"
                                     >
                                         <v-list-tile-content>
                                             <v-list-tile-title v-text="comic.name"></v-list-tile-title>
@@ -52,29 +57,43 @@
                                 </v-list>
                             </v-tab-item>
                             <v-tab-item
-                                key="Series"
+                                key="Creators"
                             >
                                 <v-list>
                                     <v-list-tile
-                                            v-for="serie in character.series.items"
-                                            :key="serie.resourceURI"
+                                            v-for="creator in serie.creators.items"
+                                            :key="creator.name"
                                     >
                                         <v-list-tile-content>
-                                            <v-list-tile-title v-text="serie.name"></v-list-tile-title>
+                                            <v-list-tile-title v-text="`${creator.name} - ${creator.role}`"></v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list>
                             </v-tab-item>
                             <v-tab-item
-                                key="Stories"
+                                key="Characters"
                             >
                                 <v-list>
                                     <v-list-tile
-                                            v-for="story in character.stories.items"
-                                            :key="story.resourceURI"
+                                            v-for="character in serie.characters.items"
+                                            :key="character.name"
                                     >
                                         <v-list-tile-content>
-                                            <v-list-tile-title v-text="story.name"></v-list-tile-title>
+                                            <v-list-tile-title v-text="character.name"></v-list-tile-title>
+                                        </v-list-tile-content>
+                                    </v-list-tile>
+                                </v-list>
+                            </v-tab-item>
+                            <v-tab-item
+                                    key="Stories"
+                            >
+                                <v-list>
+                                    <v-list-tile
+                                            v-for="story in serie.stories.items"
+                                            :key="story.name"
+                                    >
+                                        <v-list-tile-content>
+                                            <v-list-tile-title v-text="`${story.name} (${story.type})`"></v-list-tile-title>
                                         </v-list-tile-content>
                                     </v-list-tile>
                                 </v-list>
@@ -83,8 +102,8 @@
                                 key="Events"
                             >
                                 <v-list-tile
-                                        v-for="event in character.events.items"
-                                        :key="event.resourceURI"
+                                        v-for="event in serie.events.items"
+                                        :key="event.name"
                                 >
                                     <v-list-tile-content>
                                         <v-list-tile-title v-text="event.name"></v-list-tile-title>
@@ -95,7 +114,7 @@
                                 key="Urls"
                             >
                                 <v-list-tile
-                                        v-for="url in character.urls"
+                                        v-for="url in serie.urls"
                                         :key="url.type"
                                         :href="url.url"
                                 >
@@ -117,8 +136,8 @@
 
 <script>
     export default {
-        name: "CharacterItem",
-        props: ['character'],
+        name: "SerieItem",
+        props: ['serie'],
         data: function() {
             return {
                 //
@@ -126,25 +145,26 @@
         },
         computed: {
             imgUrl: function() {
-                const thumbnail = this.character.thumbnail;
+                const thumbnail = this.serie.thumbnail;
                 if (thumbnail) {
                     return `${thumbnail.path}.${thumbnail.extension}`;
                 }
                 return "@/assets/No_image_available.png";
             },
             description: function () {
-                if (this.character.description) {
-                    return this.character.description;
+                if (this.serie.description) {
+                    return this.serie.description;
                 }
                 return "No description added.";
             },
             tabs: function () {
                 return [
                     'Details',
-                    `Comics (${this.character.comics.available})`,
-                    `Series (${this.character.series.available})`,
-                    `Stories (${this.character.stories.available})`,
-                    `Events (${this.character.events.available})`,
+                    `Comics (${this.serie.comics.available})`,
+                    `Creators (${this.serie.creators.available})`,
+                    `Characters (${this.serie.characters.available})`,
+                    `Stories (${this.serie.stories.available})`,
+                    `Events (${this.serie.stories.available})`,
                     "Urls"
                 ];
             }
