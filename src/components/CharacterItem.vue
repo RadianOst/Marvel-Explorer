@@ -2,16 +2,13 @@
     <v-container>
         <v-card>
             <v-container>
+                <v-card-title primary-title="">
+                    <div class="headline">{{ character.name }}</div>
+                </v-card-title>
                 <v-layout row>
-                    <v-flex shrink pa-2>
-                        <v-img
-                                :src="imgUrl"
-                                height="125px"
-                                width="125px"
-                        ></v-img>
-                    </v-flex>
                     <v-flex>
-                        <v-tabs>
+                        <v-tabs show-arrows grow>
+                            <v-tabs-slider color="blue accent-4"></v-tabs-slider>
                             <v-tab
                                 v-for="tab in tabs"
                                 :key="tab"
@@ -22,18 +19,26 @@
                                 key="Details"
                             >
                                 <v-card>
-                                    <v-card-title primary-title>
-                                        <div>
-                                            <div class="headline">{{ character.name }}</div>
-                                            <v-layout row>
-                                                <v-flex class="grey--text" pa-2>Comics: {{ character.comics.available }}</v-flex>
-                                                <v-flex class="grey--text" pa-2>Series: {{ character.series.available }}</v-flex>
-                                                <v-flex class="grey--text" pa-2>Stories: {{ character.stories.available }}</v-flex>
-                                                <v-flex class="grey--text" pa-2>Events: {{ character.events.available }}</v-flex>
-                                            </v-layout>
-                                            <span>{{ character.description }}</span>
-                                        </div>
-                                    </v-card-title>
+                                    <v-layout row>
+                                        <v-flex shrink pa-2>
+                                            <v-img
+                                                    :src="imgUrl"
+                                                    height="125px"
+                                                    width="150px"
+                                            ></v-img>
+                                        </v-flex>
+                                        <v-card-title primary-title>
+                                            <div>
+                                                <v-layout row>
+                                                    <v-flex pa-2><span class="blue--text text--accent-4">Comics:</span> {{ character.comics.available }}</v-flex>
+                                                    <v-flex pa-2><span class="blue--text text--accent-4">Series:</span> {{ character.series.available }}</v-flex>
+                                                    <v-flex pa-2><span class="blue--text text--accent-4">Stories:</span> {{ character.stories.available }}</v-flex>
+                                                    <v-flex pa-2><span class="blue--text text--accent-4">Events:</span> {{ character.events.available }}</v-flex>
+                                                </v-layout>
+                                                <span>{{ this.description }}</span>
+                                            </div>
+                                        </v-card-title>
+                                    </v-layout>
                                 </v-card>
                             </v-tab-item>
                             <v-tab-item
@@ -126,7 +131,16 @@
         computed: {
             imgUrl: function() {
                 const thumbnail = this.character.thumbnail;
-                return `${thumbnail.path}.${thumbnail.extension}`
+                if (thumbnail) {
+                    return `${thumbnail.path}.${thumbnail.extension}`;
+                }
+                return "@/assets/No_image_available.png";
+            },
+            description: function () {
+                if (this.character.description) {
+                    return this.character.description;
+                }
+                return "No description added.";
             }
         }
     }
