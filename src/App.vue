@@ -1,37 +1,96 @@
 <template>
   <v-app>
-    <v-toolbar app>
-      <v-toolbar-title class="headline text-uppercase">
-        <span>Vuetify</span>
-        <span class="font-weight-light">MATERIAL DESIGN</span>
-      </v-toolbar-title>
-      <v-spacer></v-spacer>
-      <v-btn
-        flat
-        href="https://github.com/vuetifyjs/vuetify/releases/latest"
-        target="_blank"
-      >
-        <span class="mr-2">Latest Release</span>
-      </v-btn>
-    </v-toolbar>
-
-    <v-content>
-      <HelloWorld/>
-    </v-content>
+    <SearchBar @search="setSearchObject($event)"></SearchBar>
+    <v-container>
+      <v-layout column>
+        <template v-if="searchObject.category === 'characters'">
+          <CharacterItem v-for="item in result" :key="item.id" :character="item"></CharacterItem>
+        </template>
+        <template v-if="searchObject.category === 'comics'">
+          <ComicItem v-for="item in result" :key="item.id" :comic="item"></ComicItem>
+        </template>
+        <template v-if="searchObject.category === 'series'">
+          <SerieItem v-for="item in result" :key="item.id" :serie="item"></SerieItem>
+        </template>
+      </v-layout>
+    </v-container>
+    <BottomNavigation @change-offset="changeOffset($event)" :pagination="pagination"></BottomNavigation>
   </v-app>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld'
+import SearchBar from "./components/SearchBar";
+import CharacterItem from "./components/CharacterItem";
+import ComicItem from "./components/ComicItem";
+import SerieItem from "./components/SerieItem";
+import axios from "axios";
+import BottomNavigation from "./components/BottomNavigation";
 
 export default {
   name: 'App',
   components: {
-    HelloWorld
+      SerieItem,
+      ComicItem,
+    BottomNavigation,
+    CharacterItem,
+    SearchBar,
   },
   data () {
     return {
-      //
+      apiKey: '62a916d25516dbb33f8fce24264813e2',
+      baseUrl: 'https://gateway.marvel.com:443/v1/public/',
+      searchObject: {},
+      result: [],
+        pagination: {
+          offset: 0,
+          limit: 0,
+          totalItems: 0,
+          description: 'page 0 - 0 of 0'
+        }
+    }
+  },
+  methods: {
+    setSearchObject(searchObject) {
+      this.searchObject = searchObject;
+      this.pagination.limit = searchObject.limit;
+      this.pagination.offset = 0;
+
+      this.updateResultList()
+    },
+    changeOffset(increment) {
+      if (increment) {
+        this.pagination.offset += this.searchObject.limit
+      } else {
+        this.pagination.offset -= this.searchObject.limit
+      }
+
+      this.updateResultList()
+    },
+    updateResultList() {
+      axios.get(`${this.baseUrl}${this.category}${this.searchObject.text}&orderBy=${this.searchObject.order}&limit=${this.searchObject.limit}&offset=${this.pagination.offset}&apikey=${this.apiKey}`)
+        .then(response => {
+            this.pagination.totalItems = response.data.data.total;
+            this.pagination.description = `page ${this.pagination.offset + 1} - ${this.pagination.offset + this.searchObject.limit} of ${this.pagination.totalItems}`;
+            this.result = response.data.data.results
+        })
+        .catch(err => this.console.err(err))
+    }
+  },
+  computed: {
+    category() {
+      let category = '';
+      switch (this.searchObject.category) {
+        case 'comics':
+          category = 'comics?titleStartsWith=';
+          break;
+        case 'characters':
+          category = 'characters?nameStartsWith=';
+          break;
+        case 'series':
+          category = 'series?titleStartsWith=';
+          break;
+      }
+      return category;
     }
   }
 }
