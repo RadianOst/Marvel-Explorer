@@ -1,11 +1,20 @@
 <template>
   <v-app>
     <SearchBar @search="setSearchObject($event)"></SearchBar>
-    <CharacterItem v-if="searchObject.category === 'characters'" v-for="item in result" :key="item.id" :character="item"></CharacterItem>
-    <ComicItem v-if="searchObject.category === 'comics'" v-for="item in result" :key="item.id" :comic="item"></ComicItem>
-    <SerieItem v-if="searchObject.category === 'series'" v-for="item in result" :key="item.id" :serie="item"></SerieItem>
+    <v-container>
+      <v-layout column>
+        <template v-if="searchObject.category === 'characters'">
+          <CharacterItem v-for="item in result" :key="item.id" :character="item"></CharacterItem>
+        </template>
+        <template v-if="searchObject.category === 'comics'">
+          <ComicItem v-for="item in result" :key="item.id" :comic="item"></ComicItem>
+        </template>
+        <template v-if="searchObject.category === 'series'">
+          <SerieItem v-for="item in result" :key="item.id" :serie="item"></SerieItem>
+        </template>
+      </v-layout>
+    </v-container>
     <BottomNavigation @change-offset="changeOffset($event)" :pagination="pagination"></BottomNavigation>
-
   </v-app>
 </template>
 
