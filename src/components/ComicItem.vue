@@ -2,9 +2,18 @@
     <v-container>
         <v-card>
             <v-container>
-                <v-card-title primary-title="">
-                    <div class="headline">{{ comic.title }}</div>
-                </v-card-title>
+                <v-layout row>
+                    <v-flex shrink pa-2>
+                        <v-img
+                                :src="imgUrl"
+                                height="125px"
+                                width="150px"
+                        ></v-img>
+                    </v-flex>
+                    <v-card-title primary-title="">
+                        <div class="headline">{{ comic.title }}</div>
+                    </v-card-title>
+                </v-layout>
                 <v-layout row>
                     <v-flex>
                         <v-tabs show-arrows grow>
@@ -20,13 +29,7 @@
                             >
                                 <v-card>
                                     <v-layout row>
-                                        <v-flex shrink pa-2>
-                                            <v-img
-                                                    :src="imgUrl"
-                                                    height="125px"
-                                                    width="150px"
-                                            ></v-img>
-                                        </v-flex>
+
                                         <v-card-title primary-title>
                                             <div>
                                                 <v-layout row>
