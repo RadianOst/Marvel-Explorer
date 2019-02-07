@@ -1,7 +1,9 @@
 <template>
   <v-app>
     <SearchBar @search="setSearchObject($event)"></SearchBar>
-    <CharacterItem v-for="item in result" :key="item.id" :character="item"></CharacterItem>
+    <CharacterItem v-if="searchObject.category === 'characters'" v-for="item in result" :key="item.id" :character="item"></CharacterItem>
+    <ComicItem v-if="searchObject.category === 'comics'" v-for="item in result" :key="item.id" :comic="item"></ComicItem>
+    <SerieItem v-if="searchObject.category === 'series'" v-for="item in result" :key="item.id" :serie="item"></SerieItem>
     <BottomNavigation @change-offset="changeOffset($event)" :pagination="pagination"></BottomNavigation>
 
   </v-app>
@@ -10,12 +12,16 @@
 <script>
 import SearchBar from "./components/SearchBar";
 import CharacterItem from "./components/CharacterItem";
+import ComicItem from "./components/ComicItem";
+import SerieItem from "./components/SerieItem";
 import axios from "axios";
 import BottomNavigation from "./components/BottomNavigation";
 
 export default {
   name: 'App',
   components: {
+      SerieItem,
+      ComicItem,
     BottomNavigation,
     CharacterItem,
     SearchBar,
