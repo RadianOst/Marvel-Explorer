@@ -71,6 +71,9 @@ export default {
         case 'characters':
           category = 'characters?nameStartsWith=';
           break;
+        case 'series':
+          category = 'series?titleStartsWith=';
+          break;
       }
       return category;
     }
